@@ -3,23 +3,23 @@
 
 /**
  * Function converts four decimal numbers to one hex in good format for tga.
- * @param  r [red 	channel]
+ * @param  r [red   channel]
  * @param  g [green channel]
- * @param  b [blue 	channel]
- * @param  a [alpha	channel]
+ * @param  b [blue  channel]
+ * @param  a [alpha channel]
  *
- * @return int [four bytes with info about color]
+ * @return int [four bytes with info about pixel]
  */
 int tga_color(int r, int g, int b, int a) {
 	return a << 24 | r << 16 | g << 8 | b;
 }
 
 /**
- * [tga_export description]
- * @param  data [buffer with colors (4 bytes raw rgba)]
+ * Function write data to .tga file
+ * @param  data [buffer with pixels info (4 bytes raw rgba from tga_color)]
  * @param  w    [width]
  * @param  h    [height]
- * @param  n    [file name]
+ * @param  n    [out file name]
  *
  * @return int  [Exit code (0 - good, 1...4 - bad)]
  */

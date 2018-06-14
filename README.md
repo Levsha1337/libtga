@@ -18,7 +18,7 @@
   mv libtga.o /libs/
   ```
   
-### Using
+### Usage
   * In your .c file add next string:
   ```C
   #include "tga_img.h"

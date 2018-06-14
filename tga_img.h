@@ -1,7 +1,7 @@
 
 /**
  * github.com/levsha1337/lib_tga
- * 
+ *
  * Developed by Levsha1337 (june, 2018)
  *
  * Special thanks to Shinku
