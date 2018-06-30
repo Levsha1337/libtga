@@ -1,5 +1,8 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <math.h>
+
+#define tga_pixel(buffer, x, y, w, color) buffer[x + y * w] = color
 
 /**
  * Function converts four decimal numbers to one hex in good format for tga.
@@ -15,7 +18,68 @@ int tga_color(int r, int g, int b, int a) {
 }
 
 /**
- * Function write data to .tga file
+ * Function draws 1px line from [x0, y0] to [x, y].
+ * @param  buffer [buffer with pixels info (4 bytes raw rgba from tga_color)]
+ * @param  x0     [x start pos]
+ * @param  y0     [y start pos]
+ * @param  x      [x final pos]
+ * @param  y      [y final pos]
+ * @param  w      [width of image]
+ * @param  color  [raw rgba color]
+ * 
+ * @return int    [always 0, on this step]
+ */
+int tga_line(int *buffer, int x0, int y0, int x, int y, int w, int color) {
+
+	/* from rosettacode.org */
+	int dx = abs(x - x0), sx = x0 < x ? 1 : -1;
+	int dy = abs(y - y0), sy = y0 < y ? 1 : -1;
+	int err = (dx > dy ? dx : -dy) / 2, e2;
+
+	for (;;) {
+		tga_pixel(buffer, x0, y0, w, color);
+
+		if (x0 == x && y0 == y) break;
+
+		e2 = err;
+		if (e2 > -dx) { err -= dy; x0 += sx; }
+		if (e2 <  dy) { err += dx; y0 += sy; }
+	}
+
+	return 0;
+}
+
+/**
+ * Function draws circle on [x, y] with radius r.
+ * @param  buffer [buffer with pixels info (4 bytes raw rgba from tga_color)]
+ * @param  x      [center x]
+ * @param  y      [center y]
+ * @param  r      [raduis]
+ * @param  w      [width of image]
+ * @param  color  [raw rgba color]
+ * @return int    [always 0, on this step]
+ */
+int tga_circle(int *buffer, int x, int y, int r, int w, int color) {
+
+	for (int j = y-r; j <= y+r; j++) {
+		int ay = y - j;
+
+		for (int i = x-r; i <= x+r; i++) {
+			int ax = x - i;
+
+			float hyp2 = ay*ay + ax*ax;
+			float r2 = r*r;
+
+			if (hyp2 <= r2) tga_pixel(buffer, i, j, w, color);
+			else continue;
+		}
+	}
+
+	return 0;
+}
+
+/**
+ * Function write data to Targa (.tga) file
  * @param  data [buffer with pixels info (4 bytes raw rgba from tga_color)]
  * @param  w    [width]
  * @param  h    [height]
