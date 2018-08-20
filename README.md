@@ -15,7 +15,7 @@
   ```bash
   mkdir /libs
   mv tga_img.h /libs/
-  mv libtga.o /libs/
+  mv libtga.a /libs/
   ```
   
 ### Usage
